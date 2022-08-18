@@ -48,7 +48,7 @@ class UserController extends Controller
             'data*.type'            => 'required|in:individual,corporate',
             'data*.pan_number'      => 'required_if:type,==,corporate|digits:9',
             'pan_document'          => 'required_if:data*.type,corporate|mimes:jpg,jpeg,png|max:5048',
-            'profile_image'         => 'required_if:data*.type,corporate|mimes:jpg,jpeg,png|max:5048',
+            'profile_image'         => 'mimes:jpg,jpeg,png|max:5048',
         ]);
 
         $user_data        = json_decode($request->data);
@@ -60,10 +60,11 @@ class UserController extends Controller
         $filename_pan = uniqid() . '.' . $file_pan->extension();
         $file_pan->storeAs('public/images/pan', $filename_pan);
         
+        
+        }
         $file_profile     = $request->file('profile_image');
         $filename_profile = uniqid() . '.' . $file_profile->extension();
         $file_profile->storeAs('public/images/profile', $filename_profile);
-        }
         
 
         User::create([

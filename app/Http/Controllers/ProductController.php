@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Requests\productRequest;
 use App\Models\Category;
-use App\Http\Controllers\CategoryController;
 
 class ProductController extends Controller
 {
@@ -16,7 +16,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -24,56 +24,36 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create(ProductRequest $request)
     {
-        $request->  validate([
-            'data*.name' =>'required',
-            'data*.desc'=>'required',
-            'data*.title'=>'required',
-            'image'=>'mimes:jpg,jpeg,png|max:5048',
-            'data*.price'=>'required',
-            'data*.category_id'=>'required'
-        ]);
-        $product_data = json_decode($request->data);
-        // if(!$request->has('name')){
-           
-        //     return response()->json(['message' => 'Missing file'], 404); 
-        // }
-        // return $product_data;
+        $request-> validate([
+        'image' => 'required|mimes:jpg,jpeg,png|max:5048',
+    ]);
 
-        // $user_data        = json_decode($request->data);
- 
-        $image_file=$request->file('image');
-        $FileName = uniqid() . '.' . $image_file->extension();
-        $image_file->storeAs('public/images/product_image', $FileName);
- 
- 
+        // return $request;
+
+
+        $product_data= json_decode($request->props);
+        $file_product = $request->file('image');
+        $filename = uniqid() . '.' . $file_product->extension();
+        $file_product->storeAs('public/images/product', $filename);
+
         Product::create([
-                'name'=> $product_data ->name,
-                'desc'=>$product_data->desc,
-                 'title'=>$product_data->title,
-                'image'=>$FileName,   
-                 'price'=>$product_data->price,
-                'parent_id'=>$product_data->parent_id
-            ]);
-
-        
+            'name' => $product_data->name,
+            'image' => $filename,
+            'desc' => $product_data->desc,
+            'category_id'=> $product_data->category_id,
+        ]);
 
         $response = [
-                "status" => true,
-                "message" => "Product Created Successfully",
-            ];
-        return response()->json($response, 201);
-    }
+            "status" => true,
+            "message" => "Product Added Successfully",
 
-    public function categories($id)
-    {
-        // $category = Category::with('product')->find($id); 
+        ];
 
-        // return view('products.categories')->with('products', $category);
+        return $response;
     }
-    /*
-*
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -90,11 +70,16 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
-    }
+        $product = Product::find($id);
 
+        if (!$product) {
+            return response()->json(["message" => "Product not found"], 404);
+        }
+
+        return response()->json($product, 200);
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -106,6 +91,14 @@ class ProductController extends Controller
         //
     }
 
+
+    public function categories($id)
+        {
+            $category = Category::with('products')->find($id);
+            return response()->json($category, 200);
+
+        }
+
     /**
      * Update the specified resource in storage.
      *
@@ -113,9 +106,28 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(productRequest $request, $id)
     {
-        //
+
+
+            $product = Product::find($id);
+            $product->update();
+
+            $errResponse = [
+                "status" => false,
+                "message" => "Update error"
+            ];
+
+            if (!$product) {
+                return response()->json($errResponse, 404);
+            }
+
+            $successResponse = [
+                "status" => true,
+                "message" => "Updated Successfully"
+            ];
+
+            return response()->json($successResponse, 201);
     }
 
     /**
@@ -124,8 +136,14 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+        if (!$product) {
+            return response()->json(["message" => "Invalid"], 404);
+        }
+        $product->delete();
+        $successResponse = ["message" => "User deleted successfully"];
+        return response()->json($successResponse, 200);
     }
 }

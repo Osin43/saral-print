@@ -8,6 +8,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RateListController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,7 +47,7 @@ Route::controller(UserController::class)->group(function () {
     });
 });
 
-Route::apiResource('/blog',BlogController::class);
+
 
 
 Route::controller(OrderController::class)->group(function (){
@@ -85,12 +86,19 @@ Route::controller(CategoryController::class)->group( function(){
     });
 });
 
-// Route::controller(SubCategoryCotroller::class)->group( function(){
-//     Route::group(['middleware' => 'auth:sanctum'], function () {
-//         Route::get('/addSubCat','create');
-//         Route::get('/cat/show','index');
-//     });
-// });
+Route::controller(RateListController::class)->group( function(){
+    Route::get('/price','create');
+    Route::put('/price/{id}','show');
+    Route::get('/price/list','index');
+    Route::put('/price/update/{id}','update');
+    Route::delete('/price/{id}','destroy');
+
+    Route::group(['middleware' => 'auth:sanctum'], function () {
+        // Route::get('/cat/show','index');
+    });
+});
+
+// Route::Resource('/price',RateListController::class);
 
 
 // Banner Section
