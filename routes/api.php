@@ -8,7 +8,10 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\RateListController;
+use App\Http\Controllers\IndividualRateListController;
+use App\Http\Controllers\CorporateRateListController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CouponCodeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,7 +89,7 @@ Route::controller(CategoryController::class)->group( function(){
     });
 });
 
-Route::controller(RateListController::class)->group( function(){
+Route::controller(IndividualRateListController::class)->group( function(){
     Route::get('/price','create');
     Route::put('/price/{id}','show');
     Route::get('/price/list','index');
@@ -112,4 +115,23 @@ Route::controller(ProductController::class)->group(function () {
     Route::put('/product/{id}/update', 'update');
     Route::delete('/product/{id}/delete', 'destroy');
     
+});
+
+Route::controller(CorporateRateListController::class)->group( function(){
+    Route::post('/corporate/price','create');
+    Route::put('/corporate/{id}','show');
+    Route::get('/corporate/list','index');
+    Route::put('/corporate/update/{id}','update');
+    Route::delete('/corporate/{id}','destroy');
+});
+
+
+
+Route::controller(CartController::class)->group( function(){
+    Route::post('/addtocart/{product:id}','store');
+});
+
+Route::controller(CouponCodeController::class)->group( function(){
+    Route::post('/add','create');
+    Route::get ('/cup/{id}','show');
 });
