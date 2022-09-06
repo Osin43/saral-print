@@ -12,7 +12,12 @@ class Product extends Model
         'name',
         'image',
         'desc',
-        'category_id'
+        'category_id',
+        'size',
+        'paperWeight',
+        'lamination',
+        'weight',
+        'discount'
     ];
 
     public function category(){

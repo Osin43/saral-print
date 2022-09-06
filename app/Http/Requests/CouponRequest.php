@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RateRequest extends FormRequest
+class CouponRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,6 @@ class RateRequest extends FormRequest
     public function authorize()
     {
         return true;
-
     }
 
     /**
@@ -25,13 +24,12 @@ class RateRequest extends FormRequest
     public function rules()
     {
         return [
-            'quantity'=>'required',
-            'normal_price'=>'required',
-            'urgent_price'=>'required',
-            'product_id'=>'required',
-            // 'discount'=>'required',
+            'coupon_code'=>'required',
+            'value'=>'required',
+            'type'=>'required',
+            'status'=>'required',
+            'product'=>'required',
+            'shipping'=>'required'
         ];
-
-        
     }
 }

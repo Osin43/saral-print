@@ -26,7 +26,13 @@ class productRequest extends FormRequest
         return [
             'props*.name' => 'required|unique:banners|min:3|max:255',
             'props*.desc' => 'required',
-            'props*.category_id' => 'required'
+            'props*.category_id' => 'required',
+            'props*.size'=>'required',
+            'props*.paperWeight'=>'required',
+            'props*.lamination'=>'required',
+            'props*.weight'=>'required',
+            'props*.discount'=>'required',
+
         ];
     }
 }

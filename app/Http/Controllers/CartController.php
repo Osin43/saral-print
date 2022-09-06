@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Item;
+use App\Models\Cart;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ProductController;
+use App\Models\Product;
 
-class ItemController extends Controller
+class CartController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -33,18 +35,35 @@ class ItemController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        //
+        $product = Product::findOrFail($id);
+          
+        $cart = session()->get('cart', []);
+  
+        if(isset($cart[$id])) {
+            $cart[$id]['quantity']++;
+        } else {
+            $cart[$id] = [
+                "name" => $product->name,
+                "quantity" => 1,
+                "price" => $product->price,
+                "image" => $product->image
+            ];
+        }
+          
+        session()->put('cart', $cart);
+        return redirect()->back()->with('success', 'Product added to cart successfully!');
     }
+
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Item  $item
+     * @param  \App\Models\Cart  $cart
      * @return \Illuminate\Http\Response
      */
-    public function show(Item $item)
+    public function show(Cart $cart)
     {
         //
     }
@@ -52,10 +71,10 @@ class ItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Item  $item
+     * @param  \App\Models\Cart  $cart
      * @return \Illuminate\Http\Response
      */
-    public function edit(Item $item)
+    public function edit(Cart $cart)
     {
         //
     }
@@ -64,10 +83,10 @@ class ItemController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Item  $item
+     * @param  \App\Models\Cart  $cart
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Item $item)
+    public function update(Request $request, Cart $cart)
     {
         //
     }
@@ -75,10 +94,10 @@ class ItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Item  $item
+     * @param  \App\Models\Cart  $cart
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Item $item)
+    public function destroy(Cart $cart)
     {
         //
     }

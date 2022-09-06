@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('rate_lists', function (Blueprint $table) {
+        Schema::create('corporate_rate_lists', function (Blueprint $table) {
             $table->id();
             $table->string('quantity');
             $table->string('normal_price');
             $table->string('urgent_price');
-            // $table->unsignedBigInteger('product_id')->nullable();
-            $table->foreignId('product_id')->constrained();
+            //  $table->unsignedBigInteger('product_id')->nullable();
+            // $table->foreign('product_id')->references('id')->on('products');
+             $table->foreignId('product_id')->constrained();
+            // $table->string('discount');
             $table->timestamps();
         });
     }
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rate_lists');
+        Schema::dropIfExists('corporate_rate_lists');
     }
 };

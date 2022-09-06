@@ -43,6 +43,12 @@ class ProductController extends Controller
             'image' => $filename,
             'desc' => $product_data->desc,
             'category_id'=> $product_data->category_id,
+            'size'=>$product_data->size,
+            'paperWeight'=>$product_data->paperWeight,
+            'lamination'=>$product_data->lamination,
+            'weight'=>$product_data->weight,
+            'discount'=>$product_data->discount,
+
         ]);
 
         $response = [

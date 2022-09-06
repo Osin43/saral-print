@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\RateList;
+use App\Models\IndividualRateList;
 use Illuminate\Http\Request;
 use App\Http\Requests\RateRequest;
-
-class RateListController extends Controller
+class IndividualRateListController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +14,7 @@ class RateListController extends Controller
      */
     public function index()
     {
-        $price = RateList::all();
+        $price =IndividualRateList::all();
 
         return response()->json($price, 200);
     }
@@ -26,20 +25,17 @@ class RateListController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(RateRequest $request)
-    
     {
         
-
-        $price = RateList::create([
+        $price = IndividualRateList::create([
             'quantity'=> $request -> quantity,
             'normal_price'=>$request -> normal_price,
             'urgent_price'=>$request->urgent_price,
             'product_id'=>$request->product_id,
             'discount'=>$request ->discount,
         ]);
-
-       
         return $price;
+        
     }
 
     /**
@@ -56,12 +52,13 @@ class RateListController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\RateList  $rateList
+     * @param  \App\Models\IndividualRateList  $individualRateList
      * @return \Illuminate\Http\Response
      */
-    public function show(RateList $rateList, $id)
+    public function show(IndividualRateList $id)
     {
-        $price = RateList::find($id);
+        $price =IndividualRateList ::find($id);
+        // CorporateRateList 
 
         if (!$price) {
             return response()->json(["message" => " not found"], 404);
@@ -73,10 +70,10 @@ class RateListController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\RateList  $rateList
+     * @param  \App\Models\IndividualRateList  $individualRateList
      * @return \Illuminate\Http\Response
      */
-    public function edit(RateList $rateList)
+    public function edit(IndividualRateList $individualRateList)
     {
         //
     }
@@ -85,16 +82,12 @@ class RateListController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\RateList  $rateList
+     * @param  \App\Models\IndividualRateList  $individualRateList
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, IndividualRateList $id)
     {
-
-       
-            
-        
-        $price               = RateList::find($id);
+        $price               = IndividualRateList::find($id);
         $price->quantity         = $request->quantity ? $request->quantity : $price->name;
         $price->normal_price        = $request->normal_price ? $request->normal_price : $price->normal_price;
         $price->urgent_price       = $request->urgent_price ? $request->urgent_price : $price->urgent_price;
@@ -127,7 +120,7 @@ class RateListController extends Controller
      */
     public function destroy( $id)
     {
-        $price = RateList::find($id);
+        $price = IndividualRateList::find($id);
         if (!$price) {
             return response()->json(["message" => "rate list not found"], 404);
         }
@@ -135,5 +128,6 @@ class RateListController extends Controller
         $successResponse = ["message" => "Rate List deleted successfully"];
         return response()->json($successResponse, 200);
     }
+    }
 
-}
+    
