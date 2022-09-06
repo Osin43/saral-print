@@ -35,6 +35,7 @@ class RateListController extends Controller
             'normal_price'=>$request -> normal_price,
             'urgent_price'=>$request->urgent_price,
             'product_id'=>$request->product_id,
+            'discount'=>$request ->discount,
         ]);
 
        
