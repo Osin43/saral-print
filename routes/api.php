@@ -133,5 +133,4 @@ Route::controller(CartController::class)->group( function(){
 
 Route::controller(CouponCodeController::class)->group( function(){
     Route::post('/add','create');
-    Route::get ('/cup/{id}','show');
 });
